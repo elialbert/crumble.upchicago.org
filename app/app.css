@@ -69,9 +69,10 @@ fieldset {
     display: none !important;
 }
 
-#rectangle {
+#background {
     width:1400px;
     height:800px;
+    margin: auto;
     background-image: url(home/crumblebefore.png);
     position: relative;
 }

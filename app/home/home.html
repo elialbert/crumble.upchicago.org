@@ -1,14 +1,7 @@
-<h2>Home</h2>
-
-<p class="status good" ng-show="loggedIn">Hello! You are logged in with id {{user.uid}}.</p>
-<p class="status" ng-hide="loggedIn">Welcome. You are not <a href="#/login">logged in</a></p>
-<p>
-<input ng-model="syncedValue.$value" type="text" ng-change="syncedValue.$save()" /> <b>{{syncedValue.$value}}</b>
-</p>
-<br/>
-
-<div id="rectangle">
-  <div id="testspan" ng-style="colorStyle" ng-mouseenter="hoverEnterAction()" ng-mouseleave="hoverLeaveAction()" ng-click="clickAction()">
+<div id="background">
+  <div id="testspan" ng-style="{'background':rectColor.$value}" ng-mouseenter="hoverEnterAction()" ng-mouseleave="hoverLeaveAction()" ng-click="clickAction()">
   </div>
+
+
 </div>
 

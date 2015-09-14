@@ -7,32 +7,39 @@
     $scope.syncedValue = $firebaseObject(fbutil.ref('syncedValue'));
     $scope.user = user;
     $scope.FBURL = FBURL;
-      
+    //$scope.rectColor = 'white';  
     $scope.syncedRectColor = $firebaseObject(fbutil.ref('testRecColor'));
+    $scope.previous = 'black';  
+
+      
     $scope.syncedRectColor.$loaded().then(function() {
-	if (!$scope.syncedRectColor.$value) {
-	    $scope.syncedRectColor.$value = 'black';
-	    $scope.syncedRectColor.$save();
-	}
-	$scope.colorStyle = {background: $scope.syncedRectColor.$value};
+      $scope.rectColor = $scope.syncedRectColor.$value;	
+      if (!$scope.syncedRectColor.$value) {
+        $scope.syncedRectColor.$value = 'black';
+        $scope.syncedRectColor.$save();
+      }
+
+      console.log($scope.syncedRectColor.$value);
+      $scope.syncedRectColor.$bindTo($scope,'rectColor').then(function() {
+	$scope.previous = $scope.rectColor.$value;
+      });
     });
 
-
     $scope.hoverEnterAction = function() {
-	$scope.colorStyle = {background: "yellow"};
+	$scope.rectColor.$value = 'yellow';
     };
     $scope.hoverLeaveAction = function() {
-	$scope.colorStyle = {background: $scope.syncedRectColor.$value || 'black'};
+	$scope.rectColor.$value = $scope.previous;
     };
 
     $scope.clickAction = function() {
-	if ($scope.syncedRectColor.$value == "red") {
-	    $scope.syncedRectColor.$value = "black";
+	if ($scope.previous == "red") {
+	    $scope.rectColor.$value = "black";
 	}
 	else {
-	    $scope.syncedRectColor.$value = "red";
+	    $scope.rectColor.$value = "red";
 	}
-	$scope.syncedRectColor.$save();
+        $scope.previous = $scope.rectColor.$value;
     }
 
   }]);
