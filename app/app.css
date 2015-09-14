@@ -68,3 +68,20 @@ fieldset {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }
+
+#rectangle {
+    width:1400px;
+    height:800px;
+    background-image: url(home/crumblebefore.png);
+    position: relative;
+}
+
+#testspan {
+    position: absolute;
+    top:10px;
+    left:10px;
+    width:30px;
+    height: 30px;
+    color: black;
+    z-index: 9999;
+}

@@ -7,6 +7,34 @@
     $scope.syncedValue = $firebaseObject(fbutil.ref('syncedValue'));
     $scope.user = user;
     $scope.FBURL = FBURL;
+      
+    $scope.syncedRectColor = $firebaseObject(fbutil.ref('testRecColor'));
+    $scope.syncedRectColor.$loaded().then(function() {
+	if (!$scope.syncedRectColor.$value) {
+	    $scope.syncedRectColor.$value = 'black';
+	    $scope.syncedRectColor.$save();
+	}
+	$scope.colorStyle = {background: $scope.syncedRectColor.$value};
+    });
+
+
+    $scope.hoverEnterAction = function() {
+	$scope.colorStyle = {background: "yellow"};
+    };
+    $scope.hoverLeaveAction = function() {
+	$scope.colorStyle = {background: $scope.syncedRectColor.$value || 'black'};
+    };
+
+    $scope.clickAction = function() {
+	if ($scope.syncedRectColor.$value == "red") {
+	    $scope.syncedRectColor.$value = "black";
+	}
+	else {
+	    $scope.syncedRectColor.$value = "red";
+	}
+	$scope.syncedRectColor.$save();
+    }
+
   }]);
 
   app.config(['$routeProvider', function ($routeProvider) {
