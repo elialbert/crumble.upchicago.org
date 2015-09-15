@@ -7,7 +7,7 @@
     $scope.user = user;
     $scope.FBURL = FBURL;
     $scope.bgWidth = $window.innerWidth;
-    $scope.bgHeight = ((1820*$scope.bgWidth) / 1520);
+    $scope.bgHeight = ((1820*$scope.bgWidth) / 1520); // dimensions of crumbleafter2.jpg
     $scope.fgWidth = Math.round($scope.bgWidth/80);
     $scope.fgHeight = Math.round($scope.bgHeight/100);
     var constructCoordlist = function() {
