@@ -4,42 +4,55 @@
   var app = angular.module('myApp.home', ['firebase.auth', 'firebase', 'firebase.utils', 'ngRoute']);
 
   app.controller('HomeCtrl', ['$scope', 'fbutil', 'user', '$firebaseObject', 'FBURL', function ($scope, fbutil, user, $firebaseObject, FBURL) {
-    $scope.syncedValue = $firebaseObject(fbutil.ref('syncedValue'));
     $scope.user = user;
     $scope.FBURL = FBURL;
-    //$scope.rectColor = 'white';  
-    $scope.syncedRectColor = $firebaseObject(fbutil.ref('testRecColor'));
-    $scope.previous = 'black';  
-
+    $scope.coordList = [{top:'10px',left:'10px',id:0},{top:'10px',left:'50px',id:1}];
+    var prevHash = {};
+    
+    _.each($scope.coordList, function(coordObj) { 
+      var syncedRectColor = $firebaseObject(fbutil.ref('paintsquares/'+coordObj.id.toString()));
+      prevHash[coordObj.id] = 'black';	 // init prevhash - used to return from yellow highlight
       
-    $scope.syncedRectColor.$loaded().then(function() {
-      $scope.rectColor = $scope.syncedRectColor.$value;	
-      if (!$scope.syncedRectColor.$value) {
-        $scope.syncedRectColor.$value = 'black';
-        $scope.syncedRectColor.$save();
-      }
+      syncedRectColor.$loaded().then(function() {
+        if (!syncedRectColor.color) { // init fb storage on first run
+	  syncedRectColor = {top:coordObj.top,left:coordObj.left,color:'black'};
+	  syncedRectColor.$save();
+        }
+	// MAIN BINDTO per square for individual 3way binding
+        syncedRectColor.$bindTo($scope,"colorHash_"+coordObj.id.toString()).then(function() {
+	  prevHash[coordObj.id] = getSquare(coordObj.id).color; // reinit prevhash for preexisting
+        });
 
-      console.log($scope.syncedRectColor.$value);
-      $scope.syncedRectColor.$bindTo($scope,'rectColor').then(function() {
-	$scope.previous = $scope.rectColor.$value;
       });
-    });
 
-    $scope.hoverEnterAction = function() {
-	$scope.rectColor.$value = 'yellow';
-    };
-    $scope.hoverLeaveAction = function() {
-	$scope.rectColor.$value = $scope.previous;
-    };
+      $scope.hoverEnterAction = function(objId) {
+  	getSquare(objId).color = 'yellow'; // sets on screen and in fb due to 3way binding
+      };
+      $scope.hoverLeaveAction = function(objId) {
+	getSquare(objId).color = prevHash[objId];
+      };
 
-    $scope.clickAction = function() {
-	if ($scope.previous == "red") {
-	    $scope.rectColor.$value = "black";
+      $scope.clickAction = function(objId) {
+	var obj = getSquare(objId)
+	if (prevHash[objId] == "red") {
+	  obj.color = "black";
 	}
 	else {
-	    $scope.rectColor.$value = "red";
+	  obj.color = "red";
 	}
-        $scope.previous = $scope.rectColor.$value;
+        prevHash[objId] = obj.color;
+      }
+    });  
+
+    $scope.getColor = function(objId) {
+	var obj = getSquare(objId)
+	if (obj) { // check first for during init phase
+	    return obj.color;
+	}
+    }
+
+    var getSquare = function(objId) {
+	return $scope['colorHash_'+objId.toString()];
     }
 
   }]);

@@ -1,5 +1,10 @@
 <div id="background">
-  <div id="testspan" ng-style="{'background':rectColor.$value}" ng-mouseenter="hoverEnterAction()" ng-mouseleave="hoverLeaveAction()" ng-click="clickAction()">
+  <div ng-repeat="coordObj in coordList" 
+       class="testspan" 
+       ng-style="{'background':getColor(coordObj.id),'top':coordObj.top,'left':coordObj.left}" 
+       ng-mouseenter="hoverEnterAction(coordObj.id)" 
+       ng-mouseleave="hoverLeaveAction(coordObj.id)" 
+       ng-click="clickAction(coordObj.id)">
   </div>
 
 
