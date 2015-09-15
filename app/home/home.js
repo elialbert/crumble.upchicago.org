@@ -8,8 +8,8 @@
     $scope.FBURL = FBURL;
     $scope.bgWidth = 1400;
     $scope.bgHeight = 900;
-    $scope.fgWidth = Math.round($scope.bgWidth/20);
-    $scope.fgHeight = Math.round($scope.bgHeight/10);
+    $scope.fgWidth = Math.round($scope.bgWidth/100);
+    $scope.fgHeight = Math.round($scope.bgHeight/66);
     var constructCoordlist = function() {
 	var coordList = []
 	var id = 0;
@@ -24,12 +24,14 @@
     }
 
     $scope.coordList = constructCoordlist();//[{top:'10px',left:'10px',id:0},{top:'10px',left:'50px',id:1}];
-      console.dir($scope.coordList);
-    var prevHash = {};
+    console.log("coordlist length is " + $scope.coordList.length);
+    //var prevHash = {};
     
     _.each($scope.coordList, function(coordObj) { 
+      //$scope["colorHash_"+coordObj.id.toString()] = {top:coordObj.top,left:coordObj.left,color:''};
+	
       var syncedRectColor = $firebaseObject(fbutil.ref('paintsquares/'+coordObj.id.toString()));
-      prevHash[coordObj.id] = '';	 // init prevhash - used to return from yellow highlight
+      //prevHash[coordObj.id] = '';	 // init prevhash - used to return from yellow highlight
       
       syncedRectColor.$loaded().then(function() {
         if (!syncedRectColor.color) { // init fb storage on first run
@@ -38,10 +40,13 @@
           syncedRectColor.color='';
 	  syncedRectColor.$save();
         }
+
 	// MAIN BINDTO per square for individual 3way binding
-        syncedRectColor.$bindTo($scope,"colorHash_"+coordObj.id.toString()).then(function() {
-	  prevHash[coordObj.id] = getSquare(coordObj.id).color; // reinit prevhash for preexisting
-        });
+        syncedRectColor.$bindTo($scope,"colorHash_"+coordObj.id.toString())
+	      //.then(function() {
+	  //prevHash[coordObj.id] = getSquare(coordObj.id).color; // reinit prevhash for preexisting
+        //});
+
 
       });
 
@@ -49,14 +54,17 @@
 
 
     $scope.hoverEnterAction = function(objId) {
+	return
       getSquare(objId).color = 'yellow'; // sets on screen and in fb due to 3way binding
     };
     $scope.hoverLeaveAction = function(objId) {
+	return
       getSquare(objId).color = prevHash[objId];
     };
 
     $scope.clickAction = function(objId) {
       var obj = getSquare(objId)
+      /*
       if (prevHash[objId] == "red") {
         obj.color = "";
       }
@@ -64,6 +72,13 @@
         obj.color = "red";
       }
       prevHash[objId] = obj.color;
+      */
+      if (obj.color == "") {
+	  obj.color = "red";
+      }
+      else {
+	  obj.color = "";
+      }
     }
 
     $scope.getColor = function(objId) {
@@ -75,6 +90,7 @@
 
     var getSquare = function(objId) {
 	return $scope['colorHash_'+objId.toString()];
+	//return $scope[objId]
     }
 
 

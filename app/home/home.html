@@ -1,12 +1,12 @@
 <div id="background" ng-style="{'width':bgWidth+'px','height':bgHeight+'px'}">
-  <div ng-repeat="coordObj in coordList" 
+  <div ng-repeat="coordObj in coordList track by coordObj.id" 
        class="paintsquare" 
        ng-style="{'background':getColor(coordObj.id),'top':coordObj.top,'left':coordObj.left,'width':fgWidth+'px','height':fgHeight+'px'}" 
-       ng-mouseenter="hoverEnterAction(coordObj.id)" 
-       ng-mouseleave="hoverLeaveAction(coordObj.id)" 
        ng-click="clickAction(coordObj.id)">
   </div>
-
+<!--
+       ng-mouseenter="hoverEnterAction(coordObj.id)" 
+       ng-mouseleave="hoverLeaveAction(coordObj.id)" -->
 
 </div>
 
