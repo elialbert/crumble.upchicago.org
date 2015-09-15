@@ -81,6 +81,7 @@ fieldset {
     background-repeat: no-repeat;
     background-size:100%;
     position: relative;
+    overflow: hidden;
 }
 
 .paintsquare {
