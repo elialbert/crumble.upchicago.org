@@ -2,7 +2,8 @@
   <div ng-repeat="coordObj in coordList track by coordObj.id"  
        class="paintsquare" 
        id={{coordObj.id}}       
-       ng-style="{'background':getColor(coordObj.id),'top':coordObj.top,'left':coordObj.left,'width':fgWidth+'px','height':fgHeight+'px'}" 
+       ng-style="{'background':getColor(coordObj.id)}"
+       once-style="{'top':coordObj.top,'left':coordObj.left,'width':fgWidth+'px','height':fgHeight+'px'}"
 
   </div>
 <!--

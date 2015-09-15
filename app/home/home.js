@@ -1,7 +1,7 @@
 (function(angular) {
   "use strict";
 
-  var app = angular.module('myApp.home', ['firebase.auth', 'firebase', 'firebase.utils', 'ngRoute','QuickList']);
+  var app = angular.module('myApp.home', ['firebase.auth', 'firebase', 'firebase.utils', 'ngRoute','once']);
 
   app.controller('HomeCtrl', ['$scope', 'fbutil', 'user', '$firebaseObject', 'FBURL', '$window',function ($scope, fbutil, user, $firebaseObject, FBURL, $window) {
     $scope.user = user;
