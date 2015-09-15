@@ -6,16 +6,36 @@
   app.controller('HomeCtrl', ['$scope', 'fbutil', 'user', '$firebaseObject', 'FBURL', function ($scope, fbutil, user, $firebaseObject, FBURL) {
     $scope.user = user;
     $scope.FBURL = FBURL;
-    $scope.coordList = [{top:'10px',left:'10px',id:0},{top:'10px',left:'50px',id:1}];
+    $scope.bgWidth = 1400;
+    $scope.bgHeight = 900;
+    $scope.fgWidth = Math.round($scope.bgWidth/20);
+    $scope.fgHeight = Math.round($scope.bgHeight/10);
+    var constructCoordlist = function() {
+	var coordList = []
+	var id = 0;
+	for (var i=0;i<$scope.bgHeight / $scope.fgHeight;i++) {
+	    for (var j=0;j<$scope.bgWidth / $scope.fgWidth;j++) {
+		var entry = {top:i*$scope.fgHeight+'px',left:j*$scope.fgWidth+'px',id:id};
+		id += 1;
+		coordList.push(entry);
+	    }
+	}
+	return coordList;
+    }
+
+    $scope.coordList = constructCoordlist();//[{top:'10px',left:'10px',id:0},{top:'10px',left:'50px',id:1}];
+      console.dir($scope.coordList);
     var prevHash = {};
     
     _.each($scope.coordList, function(coordObj) { 
       var syncedRectColor = $firebaseObject(fbutil.ref('paintsquares/'+coordObj.id.toString()));
-      prevHash[coordObj.id] = 'black';	 // init prevhash - used to return from yellow highlight
+      prevHash[coordObj.id] = '';	 // init prevhash - used to return from yellow highlight
       
       syncedRectColor.$loaded().then(function() {
         if (!syncedRectColor.color) { // init fb storage on first run
-	  syncedRectColor = {top:coordObj.top,left:coordObj.left,color:'black'};
+	  syncedRectColor.top=coordObj.top;
+          syncedRectColor.left=coordObj.left;
+          syncedRectColor.color='';
 	  syncedRectColor.$save();
         }
 	// MAIN BINDTO per square for individual 3way binding
@@ -25,24 +45,26 @@
 
       });
 
-      $scope.hoverEnterAction = function(objId) {
-  	getSquare(objId).color = 'yellow'; // sets on screen and in fb due to 3way binding
-      };
-      $scope.hoverLeaveAction = function(objId) {
-	getSquare(objId).color = prevHash[objId];
-      };
-
-      $scope.clickAction = function(objId) {
-	var obj = getSquare(objId)
-	if (prevHash[objId] == "red") {
-	  obj.color = "black";
-	}
-	else {
-	  obj.color = "red";
-	}
-        prevHash[objId] = obj.color;
-      }
     });  
+
+
+    $scope.hoverEnterAction = function(objId) {
+      getSquare(objId).color = 'yellow'; // sets on screen and in fb due to 3way binding
+    };
+    $scope.hoverLeaveAction = function(objId) {
+      getSquare(objId).color = prevHash[objId];
+    };
+
+    $scope.clickAction = function(objId) {
+      var obj = getSquare(objId)
+      if (prevHash[objId] == "red") {
+        obj.color = "";
+      }
+      else {
+        obj.color = "red";
+      }
+      prevHash[objId] = obj.color;
+    }
 
     $scope.getColor = function(objId) {
 	var obj = getSquare(objId)
@@ -54,6 +76,7 @@
     var getSquare = function(objId) {
 	return $scope['colorHash_'+objId.toString()];
     }
+
 
   }]);
 
