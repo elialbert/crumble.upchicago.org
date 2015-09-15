@@ -1,15 +1,15 @@
 (function(angular) {
   "use strict";
 
-  var app = angular.module('myApp.home', ['firebase.auth', 'firebase', 'firebase.utils', 'ngRoute']);
+  var app = angular.module('myApp.home', ['firebase.auth', 'firebase', 'firebase.utils', 'ngRoute','QuickList']);
 
-  app.controller('HomeCtrl', ['$scope', 'fbutil', 'user', '$firebaseObject', 'FBURL', function ($scope, fbutil, user, $firebaseObject, FBURL) {
+  app.controller('HomeCtrl', ['$scope', 'fbutil', 'user', '$firebaseObject', 'FBURL', '$window',function ($scope, fbutil, user, $firebaseObject, FBURL, $window) {
     $scope.user = user;
     $scope.FBURL = FBURL;
-    $scope.bgWidth = 1400;
-    $scope.bgHeight = 900;
-    $scope.fgWidth = Math.round($scope.bgWidth/100);
-    $scope.fgHeight = Math.round($scope.bgHeight/66);
+    $scope.bgWidth = $window.innerWidth;
+    $scope.bgHeight = 2300;
+    $scope.fgWidth = Math.round($scope.bgWidth/80);
+    $scope.fgHeight = Math.round($scope.bgHeight/100);
     var constructCoordlist = function() {
 	var coordList = []
 	var id = 0;
@@ -61,6 +61,11 @@
 	return
       getSquare(objId).color = prevHash[objId];
     };
+
+    $scope.clickAction2 = function(event) {
+	var objId = event.srcElement.id;
+	$scope.clickAction(objId);
+    }
 
     $scope.clickAction = function(objId) {
       var obj = getSquare(objId)

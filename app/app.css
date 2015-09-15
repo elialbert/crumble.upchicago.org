@@ -1,7 +1,12 @@
 /* app css stylesheet */
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 body {
-  margin: 10px;
+  margin: 0px;
 }
 
 .menu {
@@ -70,8 +75,11 @@ fieldset {
 }
 
 #background {
-    margin: auto;
-    background-image: url(home/crumblebefore.png);
+    padding: 0px;
+    margin: 0px;
+    background-image: url(crumbleafter2.jpg);
+    background-repeat: no-repeat;
+    background-size:100%;
     position: relative;
 }
 
