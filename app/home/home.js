@@ -1,7 +1,7 @@
 (function(angular) {
   "use strict";
 
-  var app = angular.module('myApp.home', ['firebase.auth', 'firebase', 'firebase.utils', 'ngRoute','once']);
+  var app = angular.module('myApp.home', ['firebase.auth', 'firebase', 'firebase.utils', 'ngRoute','once','colorpicker.module']);
 
   var badPaintSquares = new Set([0,1,2,3,4,5,6]); 
   var manifesto = "                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      the crumble aesthetic: a manifesto...   everything falls apart. life's length varies all the time slash who knows next big thing. change only constant blah blah blacksheep. crumble deliberately. crumble in creation, in living. if life is the act of slowly dying, do it it in style, with gustooooo. is this useful yet? if not, cut it. chop chop gone. OVERWRITTENOVERWRITTENOVERWRITTEN. crumble means all inputs, all the time, firing hard. all contributions are welcome! and assimilated according to the arcane anti-bureaucratic organization process known as Stick It Somewhere... crustpunk brutalism died and went to hippie hell. we all fiddle slash masturbate together while rahm burnssssssssssssssss                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ";
@@ -10,6 +10,7 @@
     $scope.user = user;
     $scope.FBURL = FBURL;
     $scope.mode = 'default';  
+    $scope.paintColor="black";  
     $scope.bgWidth = $window.innerWidth;
     $scope.bgHeight = ((1820*$scope.bgWidth) / 1520); // dimensions of crumbleafter2.jpg
     $scope.fgWidth = Math.round($scope.bgWidth/80); //80
@@ -55,9 +56,9 @@
     });  
 
     $scope.clickAction2 = function(event) {
-	var objId = event.srcElement.ng339-2; // optimization hack. if stops working, switch to calculating id by event offset x y coords
+	var objId = event.srcElement.id;
 
-	if ($scope.mode != 'manifesto') {
+	if ($scope.mode == 'paint') {
 	    $scope.clickAction(objId);
 	}
     }
@@ -68,7 +69,7 @@
 	  return // maybe display something briefly?
       }
       if (obj.color == "") {
-	  obj.color = "red";
+	  obj.color = $scope.paintColor;
       }
       else {
 	  obj.color = "";
@@ -91,6 +92,11 @@
       }	
       else {
 	  $scope.mode = 'default';
+      }
+    }
+    $scope.togglePaintMode = function() {
+      if ($scope.mode != "paint") {	
+	  $scope.mode = "paint"
       }
     }
 
