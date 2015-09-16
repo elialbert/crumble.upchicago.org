@@ -22,7 +22,7 @@
 		var entry = {top:i*$scope.fgHeight+'px',
 			     left:j*$scope.fgWidth+'px',
 			     id:id,
-			     letter:manifesto[id%manifesto.length]
+			     letter:manifesto[id%manifesto.length],
 			    };
 		if (!badPaintSquares.has(id)) {		   
 		    coordList.push(entry);
@@ -47,14 +47,19 @@
         }
 
 	// MAIN BINDTO per square for individual 3way binding
-        syncedRectColor.$bindTo($scope,"colorHash_"+coordObj.id.toString())
+        syncedRectColor.$bindTo($scope,"colorHash_"+coordObj.id.toString()).then(function() {
+            coordObj.scopeRef = $scope["colorHash_"+coordObj.id.toString()];
+	});
       });
 
     });  
 
     $scope.clickAction2 = function(event) {
-	var objId = event.srcElement.id;
-	$scope.clickAction(objId);
+	var objId = event.srcElement.ng339-2; // optimization hack. if stops working, switch to calculating id by event offset x y coords
+
+	if ($scope.mode != 'manifesto') {
+	    $scope.clickAction(objId);
+	}
     }
 
     $scope.clickAction = function(objId) {
@@ -77,8 +82,7 @@
 	}
     }
     var getSquare = function(objId) {
-	return $scope['colorHash_'+objId.toString()];
-	//return $scope[objId]
+	return $scope["colorHash_"+objId.toString()]; 
     }
 
     $scope.manifestoToggle = function() {

@@ -1,10 +1,10 @@
 
-<div id="background" ng-style="{'width':bgWidth+'px','height':bgHeight+'px'}" ng-click="clickAction2($event)">
+<div id="background" ng-class="{paintPen:mode!='manifesto',erase:mode=='erase'}" ng-style="{'width':bgWidth+'px','height':bgHeight+'px'}" ng-click="clickAction2($event)">
   <div ng-if="mode!='manifesto'">
     <div ng-repeat="coordObj in coordList track by coordObj.id"  
 	 class="paintsquare" 
-	 id={{coordObj.id}}       
-	 ng-style="{'background':getColor(coordObj.id)}"
+      
+	 ng-style="{'background':coordObj.scopeRef.color}"
 	 once-style="{'top':coordObj.top,'left':coordObj.left,'width':fgWidth+'px','height':fgHeight+'px'}">
 	 
     </div>
@@ -13,7 +13,7 @@
   <div ng-if="mode=='manifesto'">
     <div ng-repeat="coordObj in coordList track by coordObj.id"  
 	 class="lettersquare" 
-	 id={{coordObj.id}}       
+	 id={{::coordObj.id}}       
 	 once-style="{'top':coordObj.top,'left':coordObj.left,'width':fgWidth+'px','height':fgHeight+'px'}">
 	 {{coordObj.letter}}
     </div>
@@ -23,3 +23,8 @@
 <a id="manifestoButton" ng-click="manifestoToggle()">(manifesto)</a>
 </div>
 
+<!--
+	 id={{::coordObj.id}}  
+coordObj.id.toString()
+
+-->
