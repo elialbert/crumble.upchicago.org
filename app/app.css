@@ -90,27 +90,54 @@ fieldset {
     z-index: 3000;
 }
 
+#paintButton {
+    background-color: white;
+    font-weight: 600;
+}
+
+@media only screen
+and (max-width : 520px) {
+    #manifestoButton {
+	font-size: 1em;
+    }
+    .lettersquare {
+	font-size: .4em;
+    }
+    #paintButton {
+	font-size: 6px;
+    }
+}
+@media only screen
+and (min-width : 520px) {
+    #manifestoButton {
+	font-size: 2.4em;
+    }
+    .lettersquare {
+	font-size: 1.8em;
+    }
+    #paintButton {
+	font-size: 16px;
+    }
+
+}
+
 .lettersquare {
     position: absolute;
     color: white;
     z-index: 3000;
     font-weight:900;
-    font-size:1.8em;
     text-shadow: 0px 0px 6px rgba(255,255,255,0.7), 1px 1px 1px #000;
-
-
-
 }
 
 #manifestoButton {
     color: white;
-    font-size: 2.4em;
     position: absolute;
     top: 62%;
     left: 39.5%;
     z-index: 4000;
     cursor: pointer;
 }
+
 #manifestoButton:hover {
      background-color: purple;
      cursor: pointer;
