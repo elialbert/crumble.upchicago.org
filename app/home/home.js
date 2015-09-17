@@ -54,9 +54,11 @@
         }
 
 	// MAIN BINDTO per square for individual 3way binding
-        syncedRectColor.$bindTo($scope,"colorHash_"+coordObj.id.toString()).then(function() {
+        syncedRectColor.$bindTo($scope,"colorHash_"+coordObj.id.toString())
+	  /*
+	      .then(function() {
             coordObj.scopeRef = $scope["colorHash_"+coordObj.id.toString()];
-	});
+	});*/
       });
 
     });  
@@ -70,7 +72,7 @@
     }
 
     $scope.clickAction = function(objId) {
-      var obj = getSquare(objId)
+      var obj = $scope.getSquare(objId)
       if (!obj) {
 	  return // maybe display something briefly?
       }
@@ -83,12 +85,12 @@
     }
 
     $scope.getColor = function(objId) {
-	var obj = getSquare(objId)
+	var obj = $scope.getSquare(objId)
 	if (obj) { // check first for during init phase
 	    return obj.color;
 	}
     }
-    var getSquare = function(objId) {
+    $scope.getSquare = function(objId) {
 	return $scope["colorHash_"+objId.toString()]; 
     }
 

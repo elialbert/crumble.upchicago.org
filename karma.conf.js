@@ -10,6 +10,8 @@ module.exports = function(config){
       'app/bower_components/mockfirebase/browser/mockfirebase.js',
       'app/bower_components/angularfire/dist/angularfire.js',
       'test/lib/**/*.js',
+      'app/underscore.js',
+      'app/once.js',
       'app/app.js',
       'app/config.js',
       'app/components/**/*.js',
