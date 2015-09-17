@@ -13,8 +13,14 @@
     $scope.paintColor="black";  
     $scope.bgWidth = $window.innerWidth;
     $scope.bgHeight = ((1820*$scope.bgWidth) / 1520); // dimensions of crumbleafter2.jpg
-    $scope.fgWidth = Math.round($scope.bgWidth/80); //80
-    $scope.fgHeight = Math.round($scope.bgHeight/100); //100
+    $scope.fgWidth = $scope.bgWidth/40; //80
+    $scope.fgHeight = $scope.bgHeight/50; //100
+    /*  
+    console.log("fgheight: " + $scope.fgHeight + " fgwidth: " + $scope.fgWidth); 
+    console.log("bgheight: " + $scope.bgHeight + " bgwidth: " + $scope.bgWidth);
+    console.log("height ratio: " + $scope.bgHeight / $scope.fgHeight);      
+    console.log("width ratio: " + $scope.bgWidth / $scope.fgWidth);
+    */
     var constructCoordlist = function() {
 	var coordList = []
 	var id = 0;
@@ -36,7 +42,7 @@
     }
 
     $scope.coordList = constructCoordlist();//[{top:'10px',left:'10px',id:0},{top:'10px',left:'50px',id:1}];
-    console.log("coordlist length is " + $scope.coordList.length);
+    //console.log("coordlist length is " + $scope.coordList.length);
     _.each($scope.coordList, function(coordObj) { 
       var syncedRectColor = $firebaseObject(fbutil.ref('paintsquares/'+coordObj.id.toString()));
       syncedRectColor.$loaded().then(function() {
